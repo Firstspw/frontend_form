@@ -7,7 +7,7 @@ export default function Register() {
   const [form, setForm] = useState({
     txt_firstname: "",
     txt_lastname: "",
-    txt_username: "",
+    txt_email: "",
     txt_password: ""
   });
 
@@ -29,7 +29,7 @@ export default function Register() {
         body: JSON.stringify({ 
           firstname: form.txt_firstname,
           lastname: form.txt_lastname, 
-          username: form.txt_username,
+          email: form.txt_email,
           password: form.txt_password
         }),
       });
@@ -86,7 +86,9 @@ export default function Register() {
 
       <div className="relative w-full max-w-md sm:max-w-md rounded-2xl sm:rounded-[2rem] bg-white/90 backdrop-blur-xl shadow-2xl shadow-purple-950/40 border border-white/70 overflow-hidden ring-1 ring-white/40">
 
+        {/* Header: แถบหัวการ์ดไล่เฉดสี พร้อมชื่อหัวข้อและคำบรรยาย */}
         <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 px-6 sm:px-8 pt-8 sm:pt-10 pb-14 sm:pb-16 text-center relative">
+          {/* เส้นประดับบาง ๆ มุมบนของ header เพิ่มมิติ */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.25),transparent_60%)]"></div>
 
           <h1 className="relative text-2xl sm:text-3xl font-extrabold text-white tracking-tight drop-shadow-sm">
@@ -96,6 +98,7 @@ export default function Register() {
             สมัครสมาชิกเพื่อเริ่มต้นใช้งาน ✨
           </p>
 
+          {/* Icon วงกลมลอยคาบเกี่ยวขอบล่างของ header */}
           <div className="absolute -bottom-8 sm:-bottom-9 left-1/2 -translate-x-1/2">
             <div className="w-16 h-16 sm:w-[4.5rem] sm:h-[4.5rem] rounded-full bg-white shadow-lg flex items-center justify-center text-3xl sm:text-4xl border-4 border-white ring-4 ring-indigo-200/60">
               👤
@@ -121,8 +124,8 @@ export default function Register() {
                 </div>
 
                 <div>
-                  <label className="block text-sm text-black font-medium mb-1.5">ชื่อผู้ใช้</label>
-                  <input type="text" name="txt_username" defaultValue={""} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border border-indigo-200 bg-indigo-50/40 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-200 text-black placeholder:text-gray-400" />
+                  <label className="block text-sm text-black font-medium mb-1.5">อีเมลผู้ใช้</label>
+                  <input type="email" name="txt_email" defaultValue={""} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border border-indigo-200 bg-indigo-50/40 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-200 text-black placeholder:text-gray-400" />
                 </div>
 
                 <div>
