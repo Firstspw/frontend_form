@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Swal from "sweetalert2";
+import swal from "sweetalert2";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -37,7 +37,7 @@ export default function Register() {
       const result = await res.json(); // แปลง response ที่ได้กลับมาให้เป็น JS object
 
       if (res.ok) {// สำเร็จ status 201
-        await Swal.fire({
+        await swal.fire({
           icon: "success",
           title: `บันทึกข้อมูลสำเร็จ`,
           text: "บันทึกข้อมูลผู้ใช้งานเรียบร้อยแล้ว",
@@ -47,7 +47,7 @@ export default function Register() {
 
       } else if (res.status === 400) { // ถ้า status เป็น 400 (ข้อมูลที่ส่งไปไม่ถูกต้อง)
 
-        await Swal.fire({ // validation error status 400
+        await swal.fire({ // validation error status 400
           icon: "warning",
           title: `ข้อมูลไม่ถูกต้อง`,
           text: result.message || "เกิดข้อผิดพลาด",
@@ -57,7 +57,7 @@ export default function Register() {
 
       } else if (res.status === 500) {
 
-        await Swal.fire({
+        await swal.fire({
           icon: "error",
           title: `เกิดข้อผิดพลาด`,
           text: result.message || "เซิร์ฟเวอร์มีปัญหา",
@@ -67,9 +67,9 @@ export default function Register() {
       }
 
     } catch (error) {
-      await Swal.fire({
+      await swal.fire({
         icon: "warning",
-        title: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้",
+        title: "ไม่สามารถเชื่อมต่อกับเชิฟเวอร์ได้",
         text: "กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต แล้วลองใหม่อีกครั้ง",
         confirmButtonText: "ตกลง",
         confirmButtonColor: "#e54646",
