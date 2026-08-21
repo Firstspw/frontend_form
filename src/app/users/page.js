@@ -10,6 +10,7 @@ export default function UsersPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const router = useRouter();
+  const [deletingId, setDeletingId] = useState(null); //กำหนดค่า state ไว้ด้านบน
 
   useEffect(() => {
     fetchUsers();
@@ -37,30 +38,50 @@ export default function UsersPage() {
   };
 
   const handleDelete = async (id) => {
-    const confirm = await Swal.fire({
-      icon: "question",
-      title: "ยืนยันการลบ",
-      text: "คุณต้องการลบสมาชิกคนนี้ใช่หรือไม่?",
+    // หาข้อมูลคนนั้นจาก state เพื่อเอาชื่อไปแสดงในกล่องยืนยัน
+    const user = users.find((u) => u.id === id);
+    const result = await Swal.fire({
+      icon: "warning",
+      title: "ยืนยันการลบข้อมูล",
+      html: user
+        ? `ต้องการลบ <b>${user.firstname} ${user.lastname}</b> ใช่หรือไม่?<br>เมื่อลบแล้วจะไม่สามารถกู้คืนได้`
+        : "เมื่อลบแล้วจะไม่สามารถกู้คืนได้",
       showCancelButton: true,
-      confirmButtonText: "ลบ",
+      confirmButtonText: "ลบเลย",
       cancelButtonText: "ยกเลิก",
-      confirmButtonColor: "#ef4444",
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#6b7280",
+      reverseButtons: true,
     });
 
-    if (!confirm.isConfirmed) return;
+    if (!result.isConfirmed) return;
 
     try {
-      const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-      if (!response.ok) throw new Error(`Status ${response.status}`);
+      setDeletingId(id);
 
-      setUsers((prev) => prev.filter((user) => user.id !== id));
+      const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.message || `Status ${response.status}`);
+      }
+
+      setUsers((prev) => prev.filter((u) => u.id !== id));
+
       await Swal.fire({
         icon: "success",
-        title: "ลบข้อมูลสำเร็จ",
-        confirmButtonColor: "#4f46e5",
+        title: "ลบข้อมูลเรียบร้อยแล้ว",
+        timer: 1500,
+        showConfirmButton: false,
       });
     } catch (error) {
-      await Swal.fire({ icon: "error", title: "ไม่สามารถลบข้อมูลได้" });
+      await Swal.fire({
+        icon: "error",
+        title: "ลบข้อมูลไม่สำเร็จ",
+        text: error.message,
+      });
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -158,7 +179,10 @@ export default function UsersPage() {
           {/* การ์ด สำหรับจอมือถือ */}
           <div className="md:hidden divide-y divide-gray-100">
             {users.map((user, index) => (
-              <div key={user.id} className="p-4 hover:bg-indigo-50 transition-colors">
+              <div
+                key={user.id}
+                className="p-4 hover:bg-indigo-50 transition-colors"
+              >
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <p className="text-xs text-gray-400 mb-0.5">
@@ -179,9 +203,10 @@ export default function UsersPage() {
                   </button>
                   <button
                     onClick={() => handleDelete(user.id)}
+                    disabled={deletingId === user.id}
                     className="flex-1 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-colors"
                   >
-                    ลบ
+                    {deletingId === user.id ? "กำลังลบ..." : "ลบ"}
                   </button>
                 </div>
               </div>
