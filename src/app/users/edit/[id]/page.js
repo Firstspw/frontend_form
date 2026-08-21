@@ -11,9 +11,6 @@ export default function FormEdit() {
   const router = useRouter();
   const id = params.id;
 
-  // ============================================================
-  // แก้ที่ 1: hook ทุกตัวต้องอยู่บนสุด ห้ามมี return มาคั่นกลาง
-  // ============================================================
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -28,9 +25,6 @@ export default function FormEdit() {
     fetchUser();
   }, [id]);
 
-  // ============================================================
-  // แก้ที่ 2: ดึงเฉพาะ id ที่กำลังแก้ไข แล้วเติมค่าลงฟอร์ม
-  // ============================================================
   const fetchUser = async () => {
     setIsLoading(true);
     setIsError(false);
@@ -102,8 +96,6 @@ export default function FormEdit() {
     try {
       setIsSaving(true);
 
-      // ถ้าไม่ได้กรอกรหัสผ่านใหม่ จะไม่ส่งฟิลด์นี้ไป
-      // ป้องกันการทับรหัสผ่านเดิมด้วยค่าว่าง
       const payload = {
         firstname: form.txt_firstname,
         lastname: form.txt_lastname,
@@ -121,10 +113,6 @@ export default function FormEdit() {
         body: JSON.stringify(payload),
       });
 
-      // ============================================================
-      // แก้ที่ 4: ประกาศ result ก่อนใช้งาน
-      // .catch(() => ({})) กันกรณี server ไม่ได้ส่ง JSON กลับมา
-      // ============================================================
       const result = await response.json().catch(() => ({}));
 
       if (response.ok) {
@@ -178,55 +166,65 @@ export default function FormEdit() {
     }
   };
 
-  // ============================================================
-  // early return ย้ายลงมาไว้ตรงนี้ หลัง hook ทั้งหมดถูกเรียกครบแล้ว
-  // ============================================================
   if (isLoading) return <p className="p-6">กำลังโหลดข้อมูล...</p>;
   if (isError) return <p className="p-6">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>;
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <div className="bg-white rounded-lg shadow-md border">
-        {/* Header */}
-        <div className="border-b px-6 py-4">
-          <h1 className="text-2xl font-bold text-gray-800">
-            แก้ไขข้อมูลสมาชิก #{id}
-          </h1>
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-indigo-950 via-purple-900 to-fuchsia-900 flex items-center justify-center p-4 sm:p-6">
+
+      <div className="absolute -top-16 -left-16 w-56 h-56 sm:-top-24 sm:-left-24 sm:w-96 sm:h-96 bg-fuchsia-500 rounded-full blur-3xl opacity-30 animate-pulse"></div>
+
+      <div className="absolute -bottom-16 -right-16 w-56 h-56 sm:-bottom-24 sm:-right-24 sm:w-96 sm:h-96 bg-blue-500 rounded-full blur-3xl opacity-30 animate-pulse"></div>
+
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-72 sm:h-72 bg-indigo-400 rounded-full blur-3xl opacity-20"></div>
+
+      <div className="relative w-full max-w-md sm:max-w-md rounded-2xl sm:rounded-[2rem] bg-white/90 backdrop-blur-xl shadow-2xl shadow-purple-950/40 border border-white/70 overflow-hidden ring-1 ring-white/40">
+      
+        <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 px-6 sm:px-8 pt-8 sm:pt-10 pb-14 sm:pb-16 text-center relative">
+          {/* Header */}
+          <div className="border-b px-6 py-4">
+            <h1 className="relative text-2xl sm:text-3xl font-extrabold text-white tracking-tight drop-shadow-sm">
+              แก้ไขข้อมูลสมาชิก #{id}
+            </h1>
+          </div>
         </div>
 
         <form onSubmit={handleUpdate} className="p-6 space-y-5">
-          <label className="text-black">กรุณาระบุชื่อ</label>
+          <label className="block text-sm text-black font-medium mb-1.5">
+            ชื่อ
+          </label>
           <input
             type="text"
             name="txt_firstname"
             value={form.txt_firstname} /* แก้ที่ 3: เดิมเป็น defaultValue */
             onChange={handleChange}
-            className="w-full border text-black border-black rounded-md px-4 py-2"
-            placeholder="firstname"
+            className="w-full px-4 py-2.5 rounded-xl border border-indigo-200 bg-indigo-50/40 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-200 text-black placeholder:text-gray-400"
           />
 
-          <label className="text-black">กรุณาระบุนามสกุล</label>
+          <label className="block text-sm text-black font-medium mb-1.5">
+            นามสกุล
+          </label>
           <input
             type="text"
             name="txt_lastname"
             value={form.txt_lastname}
             onChange={handleChange}
-            className="w-full border text-black border-black rounded-md px-4 py-2"
-            placeholder="lastname"
+            className="w-full px-4 py-2.5 rounded-xl border border-indigo-200 bg-indigo-50/40 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-200 text-black placeholder:text-gray-400"
           />
 
-          <label className="text-black">Username</label>
+          <label className="block text-sm text-black font-medium mb-1.5">
+            ชื่อผู้ใช้
+          </label>
           <input
             type="text"
             name="txt_username"
             value={form.txt_username}
             onChange={handleChange}
-            className="w-full border text-black border-black rounded-md px-4 py-2"
-            placeholder="username"
+            className="w-full px-4 py-2.5 rounded-xl border border-indigo-200 bg-indigo-50/40 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-200 text-black placeholder:text-gray-400"
           />
 
-          <label className="text-black">
-            Password{" "}
+          <label className="block text-sm text-black font-medium mb-1.5">
+            รหัสผ่าน{" "}
             <span className="text-sm text-gray-500">
               (เว้นว่างไว้ถ้าไม่ต้องการเปลี่ยน)
             </span>
@@ -236,15 +234,14 @@ export default function FormEdit() {
             name="txt_password"
             value={form.txt_password}
             onChange={handleChange}
-            className="w-full border text-black border-black rounded-md px-4 py-2"
-            placeholder="password"
+            className="w-full px-4 py-2.5 rounded-xl border border-indigo-200 bg-indigo-50/40 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-200 text-black placeholder:text-gray-400"
           />
 
           <div className="flex gap-3">
             <button
               type="submit"
               disabled={isSaving}
-              className="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-2.5 mt-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-semibold text-sm shadow-md transition-all duration-200 hover:shadow-lg hover:brightness-105 active:scale-[0.98]"
             >
               {isSaving ? "กำลังบันทึก..." : "บันทึกข้อมูล"}
             </button>
@@ -252,7 +249,7 @@ export default function FormEdit() {
             <button
               type="button"
               onClick={() => router.push("/users")}
-              className="px-5 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
+              className="w-full py-2.5 mt-2 rounded-xl bg-gradient-to-r from-gray-500 via-gray-600 to-gray-700 text-white font-semibold text-sm shadow-md transition-all duration-200 hover:shadow-lg hover:brightness-105 active:scale-[0.98]"
             >
               ยกเลิก
             </button>

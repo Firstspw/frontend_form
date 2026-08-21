@@ -81,7 +81,9 @@ export default function Register() {
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-indigo-950 via-purple-900 to-fuchsia-900 flex items-center justify-center p-4 sm:p-6">
     
       <div className="absolute -top-16 -left-16 w-56 h-56 sm:-top-24 sm:-left-24 sm:w-96 sm:h-96 bg-fuchsia-500 rounded-full blur-3xl opacity-30 animate-pulse"></div>
+
       <div className="absolute -bottom-16 -right-16 w-56 h-56 sm:-bottom-24 sm:-right-24 sm:w-96 sm:h-96 bg-blue-500 rounded-full blur-3xl opacity-30 animate-pulse"></div>
+
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-72 sm:h-72 bg-indigo-400 rounded-full blur-3xl opacity-20"></div>
 
       <div className="relative w-full max-w-md sm:max-w-md rounded-2xl sm:rounded-[2rem] bg-white/90 backdrop-blur-xl shadow-2xl shadow-purple-950/40 border border-white/70 overflow-hidden ring-1 ring-white/40">
@@ -97,6 +99,7 @@ export default function Register() {
           </p>
 
           <div className="absolute -bottom-8 sm:-bottom-9 left-1/2 -translate-x-1/2">
+          
             <div className="w-16 h-16 sm:w-[4.5rem] sm:h-[4.5rem] rounded-full bg-white shadow-lg flex items-center justify-center text-3xl sm:text-4xl border-4 border-white ring-4 ring-indigo-200/60">
               👤
             </div>
